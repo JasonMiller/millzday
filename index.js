@@ -18,10 +18,10 @@ const DateDiff = {
     let distance = date - now;
 
     return {
-      days: Math.floor(distance / this.day),
-      hours: Math.floor((distance % this.day) / this.hour),
-      minutes: Math.floor((distance % this.hour) / this.minute),
-      seconds: Math.floor((distance % this.minute) / this.second)
+      days: Math.floor(Math.abs(distance / this.day)),
+      hours: Math.floor(Math.abs(distance % this.day) / this.hour),
+      minutes: Math.floor(Math.abs(distance % this.hour) / this.minute),
+      seconds: Math.floor(Math.abs(distance % this.minute) / this.second)
     };
 	}
 };
@@ -29,23 +29,29 @@ const DateDiff = {
 (function() {
   document.body.style.backgroundImage = `url('/img/${parseInt(Math.random() * 18)}.jpg')`;
 
+  let a = document.getElementById('a');
+  let {days, hours} = DateDiff.getRemainingFromNow(new Date('2/13/2021 19:00 GMT-0500'));
+
+  if (days == 0 && hours < 4) {
+    a.style.display = 'block';
+  }
+
   let heading = document.getElementById('heading');
-  let month = 2;
-  let day = 13;
+  let millzday = '2/13';
 
   let now = new Date();
   let year = now.getFullYear();
-  let date = new Date(`${month}/${day}/${year}`)
+  let date = new Date(`${millzday}/${year}`)
 
   if (DateDiff.compareDateToNow(date) > 0) {
-    date = new Date(`${day}/${month}/${year + 1}`)
+    date = new Date(`${millzday}/${year + 1}`)
   }
 
 	let timer = setInterval(showRemaining, 1000);
 
   function showRemaining() {
     if (DateDiff.compareDateToNow(date) == 0) {
-      heading.innerText = 'MILLZDAY!!';
+      heading.innerText = 'MillzDay!';
 
       clearInterval(timer);
     } else {
